@@ -126,8 +126,7 @@ fun CustomerList(
 
         Button(
             onClick = { viewModel.insertUsers()
-                viewModel.insertTransaction(trans)
-                viewModel.insertCusTransCrossRef(crossRef)
+
                       },
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {

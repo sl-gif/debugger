@@ -24,19 +24,20 @@ import kotlinx.coroutines.runBlocking
 
 
 val crossRef = listOf(
-    CustomerTransactionCrossRef(0,0),
-    CustomerTransactionCrossRef(0,1),
-    CustomerTransactionCrossRef(1,2),
-    CustomerTransactionCrossRef(2,1),
-    CustomerTransactionCrossRef(1,0),
-    CustomerTransactionCrossRef(2,2),
+  //  CustomerTransactionCrossRef(0,0),
+    CustomerTransactionCrossRef(1,1),
+   CustomerTransactionCrossRef(1,2),
+//   CustomerTransactionCrossRef(2,1),
+  //  CustomerTransactionCrossRef(1,0),
+ //   CustomerTransactionCrossRef(2,2),
 )
+val ref = CustomerTransactionCrossRef(0,0)
 
 val trans = listOf(
     Transaction("cash","demo",customerOwnerId =0, transactionId = 0),
     Transaction("credit","demo",customerOwnerId =1),
     Transaction("debt","demo",customerOwnerId =2),
-    Transaction("cash","demo",customerOwnerId =2),
+   // Transaction("cash","demo",customerOwnerId =2),
 )
 
 @Composable
@@ -44,8 +45,7 @@ fun CustomerDetailContainer(
     name: String,
     viewModel: MyViewModel
 ) {
-//    viewModel.insertTransaction(trans)
-//    viewModel.insertCusTransCrossRef(crossRef)
+
     val scope = rememberCoroutineScope()
     val getAllRecord = viewModel.readAllData.observeAsState(listOf()).value
     val getRecord = viewModel.getAllTransactions.observeAsState(listOf()).value
@@ -83,8 +83,8 @@ fun CustomerDetailContainer(
 
         Button(
             onClick = {
-
-
+          //      viewModel.insertCusTransCrossRef(crossRef)
+                viewModel.insertTransaction(trans)
 
             },
             modifier = Modifier.align(Alignment.BottomCenter)){}

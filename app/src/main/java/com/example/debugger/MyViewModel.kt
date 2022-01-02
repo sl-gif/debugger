@@ -8,6 +8,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import com.example.debugger.database.DataBase
 import com.example.debugger.entity.*
+import com.example.debugger.ui.customerdetail.crossRef
+import com.example.debugger.ui.customerdetail.ref
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -69,7 +71,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
      fun insertUsers(){
       viewModelScope.launch {
           repository.insertCustomers(mutableListOf(
-              Customers("victor","student"),
+              Customers("victor","student", customerId = 0),
               Customers("okeagu","student"),
               Customers("stephen","student"),
           ))
@@ -82,9 +84,12 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     fun insertTransaction(item: List<Transaction>){
         viewModelScope.launch {
             repository.insertTransaction(item)
-//            repository.insertTransaction(Transaction(
-//                "cash","demo"
-//            ))
+//            repository.insertTransaction(
+//                listOf(Transaction(
+//                "cash","demo", customerOwnerId = 0, transactionId = 0)
+//            )
+//            )
+//            insertCusTransCrossRef(listOf( CustomerTransactionCrossRef(0,0)))
 //            repository.insertTransaction(Transaction(
 //                "credit","demo"
 //            ))
@@ -95,15 +100,24 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
 //        //    getCrossRef("victor")
 //
       }
-    }
 
+        insertCusTransCrossRef(
+            crossRef
+        )
+
+
+    }
+//i had to insert more than ... items in the crossref list params
+    //if there n number of customers with n numbers of trans there has to be n numbers of crosssref
+    //becareful when you insert crossref, there is no id with value 0
     fun insertCusTransCrossRef(item: List<CustomerTransactionCrossRef>){
         viewModelScope.launch {
-            repository.insertCusTransRef(item)
-//            repository.insertCusTransRef(
-//                CustomerTransactionCrossRef("victor","cash")
-//            )
-//            repository.insertCusTransRef(
+           repository.insertCusTransRef(item)
+//           repository.insertCusTransRef(
+//            listOf(
+//                CustomerTransactionCrossRef(0,0))
+//           )
+       //     repository.insertCusTransRef(
 //                CustomerTransactionCrossRef("victor","credit")
 //            )
 //            repository.insertCusTransRef(
