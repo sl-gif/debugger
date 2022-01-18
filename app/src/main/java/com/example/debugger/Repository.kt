@@ -3,6 +3,7 @@ package com.example.debugger
 import androidx.lifecycle.LiveData
 import com.example.debugger.customerdao.CustomerDao
 import com.example.debugger.entity.*
+import kotlinx.coroutines.flow.Flow
 
 class Repository(private val customerDao: CustomerDao) {
 
@@ -16,11 +17,11 @@ class Repository(private val customerDao: CustomerDao) {
         customerDao.insertCustomer(customer = customer)
     }
 
-    suspend fun insertTransaction(transaction: List<Transaction>){
+    suspend fun insertTransaction(transaction: Transaction){
         customerDao.insertTransaction(transaction = transaction)
     }
 
-    suspend fun insertCusTransRef(crossRef: List< CustomerTransactionCrossRef>){
+    suspend fun insertCusTransRef(crossRef:  CustomerTransactionCrossRef){
         customerDao.insertCustomerTransactionCrossRef(crossRef = crossRef)
     }
 
@@ -43,4 +44,9 @@ class Repository(private val customerDao: CustomerDao) {
     suspend  fun getTransWithCus(name: Int): List<TransactionWithCustomer>{
         return customerDao.getCustomersOfTransaction(name)
     }
+
+    suspend fun getCustomersWithTransactions(customerId: Int): List<CustomerWithTransactions>{
+        return customerDao.getCustomersWithTransactions(customerId = customerId)
+    }
+
 }

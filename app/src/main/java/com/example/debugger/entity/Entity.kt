@@ -27,23 +27,33 @@ data class Transaction(
     val customerOwnerId: Int
 
 )
-//@Entity(
-//    tableName = "cross",
-//    primaryKeys =["customerId","transactionId"],
-//    foreignKeys = [
-//        ForeignKey(
-//            parentColumns = ["name"],
-//            childColumns = ["customerId"],
-//            entity = Customers::class,
-//        ),
-//        ForeignKey(
-//            parentColumns = ["transactionType"],
-//            childColumns = ["transactionId"],
-//            entity = Transaction::class
-//        )
-//    ]
-//)
-@Entity(primaryKeys =["customerId","transactionId"])
+
+data class CustomerWithTransactions(
+@Embedded val customer: Customers,
+@Relation(
+    parentColumn = "customerId",
+    entityColumn = "customerOwnerId"
+)
+val transactions: List<Transaction>
+)
+
+@Entity(
+    primaryKeys =["customerId","transactionId"],
+    foreignKeys = [
+        ForeignKey(
+            parentColumns = ["customerId"],
+            childColumns = ["customerId"],
+            entity = Customers::class,
+        ),
+        ForeignKey(
+            parentColumns = ["transactionId"],
+            childColumns = ["transactionId"],
+            entity = Transaction::class,
+        ),
+    ],
+    indices = [ Index(value =["transactionId"], unique = true) ]
+)
+//@Entity(primaryKeys =["customerId","transactionId"])
 data class CustomerTransactionCrossRef(
     val customerId: Int,
     val transactionId: Int

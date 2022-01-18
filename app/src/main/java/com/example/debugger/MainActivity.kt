@@ -8,19 +8,25 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.debugger.entity.Customers
+import com.example.debugger.ui.customerdetail.BottomSheet
 import com.example.debugger.ui.customerdetail.CustomerDetailContainer
 import com.example.debugger.ui.theme.DEBUGGERTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalPagerApi
+@ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModel = MyViewModel(application)
+        val viewModel = ViewModelProvider(this,MyViewModelFactory(application)) [MyViewModel::class.java]
+        val transDetailViewModel = ViewModelProvider(this,TransDetailViewModelFactory(application)) [TransDetailViewModel::class.java]
         super.onCreate(savedInstanceState)
         setContent {
 
@@ -36,18 +42,30 @@ class MainActivity : ComponentActivity() {
                                 composable("home") {
                                     TabLayout(
                                         viewModel = viewModel,
+                                        detailViewModel = transDetailViewModel,
                                         navController = navController,
                                     )
                                 }
                                 composable(
-                                    "homeDetails/{name}",
+                                    "homeDetails/{name}/{id}",
                                     arguments = listOf(
-                                        navArgument("name") { type = NavType.StringType }
+                                        navArgument("name") { type = NavType.StringType },
+                                        navArgument("id"){type = NavType.IntType}
                                     )
                                 ) {
 
                                     val customerName = remember { it.arguments?.getString("name") }
-                                    CustomerDetailContainer(name = customerName ?: "",viewModel = viewModel)
+                                    val customerId = remember { it.arguments?.getInt("id") }
+//                                    CustomerDetailContainer(
+//                                        name = customerName ?: "",
+//                                        id = customerId!! ,
+//                                        viewModel = viewModel
+//                                    )
+                                    BottomSheet(
+                                        customerName =customerName ?: ""  ,
+                                        customerId = customerId!! ,
+                                        viewModel = transDetailViewModel
+                                    )
                                 }
                             }
 

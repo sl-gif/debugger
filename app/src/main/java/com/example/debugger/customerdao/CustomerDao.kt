@@ -2,10 +2,9 @@ package com.example.debugger.customerdao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.debugger.entity.CustomerTransactionCrossRef
-import com.example.debugger.entity.CustomerWithTransaction
-import com.example.debugger.entity.Customers
-import com.example.debugger.entity.TransactionWithCustomer
+import androidx.room.Transaction
+import com.example.debugger.entity.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CustomerDao {
@@ -24,11 +23,11 @@ interface CustomerDao {
     suspend fun insertCustomer(customer: Customers)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTransaction(transaction: List<com.example.debugger.entity.Transaction>)
+    suspend fun insertTransaction(transaction: com.example.debugger.entity.Transaction)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomerTransactionCrossRef(
-        crossRef: List< CustomerTransactionCrossRef>
+        crossRef: CustomerTransactionCrossRef
     )
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -53,5 +52,9 @@ interface CustomerDao {
         customerId: Int
     ): List<CustomerWithTransaction>
 
-
+     @Transaction
+     @Query("SELECT * FROM Customers WHERE customerId = :customerId")
+     suspend fun getCustomersWithTransactions(
+         customerId: Int
+     ): List<CustomerWithTransactions>
 }

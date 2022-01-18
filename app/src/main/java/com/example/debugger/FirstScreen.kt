@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.debugger.entity.Customers
-import com.example.debugger.ui.customerdetail.crossRef
-import com.example.debugger.ui.customerdetail.trans
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -35,13 +33,13 @@ import com.google.accompanist.pager.rememberPagerState
 @Composable
 fun TabLayout(
     viewModel: MyViewModel,
+    detailViewModel: TransDetailViewModel,
     navController: NavController,
-   // clicked: Boolean
+    // clicked: Boolean
 ) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Details", "Customer")
     val pagerState = rememberPagerState()
-   // var clicked by remember { mutableStateOf(false) }
 
     Column {
         TabRow(
@@ -72,7 +70,8 @@ fun TabLayout(
                 0 -> Text(text = "This is the Detail Screen")
                 1 -> CustomerList(
                     viewModel,
-                    navController,
+                    detailViewModel = detailViewModel,
+                    nav = navController,
                     clicked = viewModel.clicked,
                     onClick = { viewModel.onChangeClick(true) })
             }
@@ -84,9 +83,11 @@ fun TabLayout(
     }
 
 }
+
 @Composable
 fun CustomerList(
     viewModel: MyViewModel,
+    detailViewModel: TransDetailViewModel,
     nav: NavController,
     clicked: Boolean,
     onClick: (Boolean) -> Unit
@@ -95,7 +96,7 @@ fun CustomerList(
     val sampleViewModel: MyViewModel = viewModel(
         factory = MyViewModelFactory(context.applicationContext as Application)
     )
-
+//this is a flow not a livedata
     val getAllCustomers = sampleViewModel.getAllCustomers.observeAsState(listOf()).value
     Log.d("ROOM  from OUTSIDE SCOPE", "this is customer $getAllCustomers")
 
@@ -108,6 +109,7 @@ fun CustomerList(
             items(getAllCustomers.size) { customer ->
                 AddCustomer(
                     viewModel = viewModel,
+                    detailViewModel = detailViewModel,
                     nav = nav,
                     getAllCustomers[customer],
                     clicked = clicked,
@@ -125,9 +127,10 @@ fun CustomerList(
         )
 
         Button(
-            onClick = { viewModel.insertUsers()
+            onClick = {
+                viewModel.insertUser()
 
-                      },
+            },
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             Text("Click")
@@ -139,6 +142,7 @@ fun CustomerList(
 @Composable
 fun AddCustomer(
     viewModel: MyViewModel,
+    detailViewModel: TransDetailViewModel,
     nav: NavController,
     customer: Customers,
     clicked: Boolean,
@@ -152,7 +156,9 @@ fun AddCustomer(
             .padding(5.dp)
             .height(50.dp)
             .clickable {
-                nav.navigate("homeDetails/${customer.customerName}") },
+                detailViewModel.getCustomersWithTransactions(customer.customerId)
+                nav.navigate("homeDetails/${customer.customerName}/${customer.customerId}")
+            },
         //    elevation = 5.dp,
         shape = RoundedCornerShape(5.dp),
 
