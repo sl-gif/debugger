@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DEBUGGER</string>
+    <string name="drop_down_title">Add Transactions</string>
+    <string name="Header_Save">Save</string>
 </resources>

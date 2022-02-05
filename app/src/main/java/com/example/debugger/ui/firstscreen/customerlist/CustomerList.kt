@@ -1,4 +1,4 @@
-package com.example.debugger
+package com.example.debugger.ui.firstscreen
 
 import android.app.Application
 import android.util.Log
@@ -8,13 +8,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -23,66 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.debugger.MyViewModel
+import com.example.debugger.MyViewModelFactory
+import com.example.debugger.TransDetailViewModel
 import com.example.debugger.entity.Customers
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
-
-@ExperimentalPagerApi
-@Composable
-fun TabLayout(
-    viewModel: MyViewModel,
-    detailViewModel: TransDetailViewModel,
-    navController: NavController,
-    // clicked: Boolean
-) {
-    var tabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Details", "Customer")
-    val pagerState = rememberPagerState()
-
-    Column {
-        TabRow(
-            selectedTabIndex = tabIndex,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    Modifier.pagerTabIndicatorOffset(
-                        pagerState = pagerState,
-                        tabPositions
-                    )
-                )
-            }) {
-            tabs.forEachIndexed { index, text ->
-                Tab(
-                    selected = index == tabIndex,
-                    onClick = { tabIndex = index },
-                    modifier = Modifier
-                        .padding(10.dp)
-                ) {
-                    Text(text = text)
-                }
-
-            }
-
-        }
-        HorizontalPager(count = tabs.size, state = pagerState) { tabIndex ->
-            when (tabIndex) {
-                0 -> Text(text = "This is the Detail Screen")
-                1 -> CustomerList(
-                    viewModel,
-                    detailViewModel = detailViewModel,
-                    nav = navController,
-                    clicked = viewModel.clicked,
-                    onClick = { viewModel.onChangeClick(true) })
-            }
-        }
-//        when (tabIndex) {
-//            0 -> Text(text = "This is the Detail Screen")
-//            1 -> Text(text = "This is the Customer Screen")
-//        }
-    }
-
-}
 
 @Composable
 fun CustomerList(
@@ -156,7 +104,7 @@ fun AddCustomer(
             .padding(5.dp)
             .height(50.dp)
             .clickable {
-                detailViewModel.getCustomersWithTransactions(customer.customerId)
+                detailViewModel.readAllData(customer.customerId)
                 nav.navigate("homeDetails/${customer.customerName}/${customer.customerId}")
             },
         //    elevation = 5.dp,
@@ -165,7 +113,7 @@ fun AddCustomer(
         ) {
         Row(modifier = Modifier.fillMaxSize()) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = com.example.debugger.R.drawable.ic_launcher_foreground),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -196,5 +144,3 @@ fun AddCustomer(
 
     }
 }
-
-

@@ -1,4 +1,4 @@
-package com.example.debugger
+package com.example.debugger.repository
 
 import androidx.lifecycle.LiveData
 import com.example.debugger.customerdao.CustomerDao
@@ -48,5 +48,7 @@ class Repository(private val customerDao: CustomerDao) {
     suspend fun getCustomersWithTransactions(customerId: Int): List<CustomerWithTransactions>{
         return customerDao.getCustomersWithTransactions(customerId = customerId)
     }
+
+
 
 }
