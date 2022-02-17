@@ -1,4 +1,4 @@
-package com.example.debugger.ui.customerdetail
+package com.example.debugger.ui.customerdetail.customerdetailtransactions
 
 import androidx.compose.runtime.Immutable
 

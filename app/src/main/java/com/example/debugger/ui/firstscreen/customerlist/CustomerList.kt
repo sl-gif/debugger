@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.R
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -61,8 +62,10 @@ fun CustomerList(
                     nav = nav,
                     getAllCustomers[customer],
                     clicked = clicked,
-                    onClick = onClick
-                )
+                    onClick = {
+                        detailViewModel.readAllData(getAllCustomers[customer].customerId)
+                        nav.navigate("homeDetails/${getAllCustomers[customer].customerName}/${getAllCustomers[customer].customerId}")
+                    })
                 Log.d("ROOM", "this is customer ${getAllCustomers[customer]}")
             }
         }
@@ -135,6 +138,58 @@ fun AddCustomer(
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     text = customer.customerType,
+                    modifier = Modifier.weight(1.0f),
+                    fontSize = 11.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+
+    }
+}
+
+//This should be reusable for AddCustomer function and Business Analysis Card items
+@Composable
+fun ItemsCard(
+    image: Painter,
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+
+    Card(
+        modifier
+            .clickable {
+                 onClick()
+            },
+        //    elevation = 5.dp,
+        shape = RoundedCornerShape(5.dp),
+
+        ) {
+        Row(modifier = modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(id = com.example.debugger.R.drawable.ic_launcher_foreground),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .clip(CircleShape)
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = text,
+                    modifier = Modifier.weight(1.0f),
+                    fontSize = 15.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = "",
                     modifier = Modifier.weight(1.0f),
                     fontSize = 11.sp,
                     color = Color.Gray
