@@ -1,4 +1,4 @@
-package com.example.debugger
+package com.example.debugger.ui.customerdetail.customerdetailtransactions
 
 import android.app.Application
 import androidx.compose.runtime.getValue
@@ -14,6 +14,7 @@ import com.example.debugger.entity.CustomerWithTransactions
 import com.example.debugger.entity.Transaction
 import com.example.debugger.repository.Repository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 

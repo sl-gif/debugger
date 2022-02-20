@@ -19,6 +19,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.debugger.ui.customerdetail.BottomSheet.BottomSheet
+import com.example.debugger.ui.customerdetail.customerdetailtransactions.TransDetailViewModel
+import com.example.debugger.ui.customerdetail.customerdetailtransactions.TransDetailViewModelFactory
+import com.example.debugger.ui.firstscreen.homescreen.TabLayout
 import com.example.debugger.ui.theme.DEBUGGERTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -28,7 +31,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val viewModel = ViewModelProvider(this,MyViewModelFactory(application)) [MyViewModel::class.java]
-        val transDetailViewModel = ViewModelProvider(this,TransDetailViewModelFactory(application)) [TransDetailViewModel::class.java]
+        val transDetailViewModel = ViewModelProvider(this,TransDetailViewModelFactory(application))[TransDetailViewModel::class.java]
+
         super.onCreate(savedInstanceState)
         setContent {
 

@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.debugger.R
-import com.example.debugger.TransDetailViewModel
 import com.example.debugger.entity.Transaction
-import com.example.debugger.ui.customerdetail.CustomerDetailContainer
+import com.example.debugger.ui.customerdetail.customerdetailtransactions.CustomerDetailContainer
+import com.example.debugger.ui.customerdetail.customerdetailtransactions.TransDetailViewModel
 import kotlinx.coroutines.launch
 
 

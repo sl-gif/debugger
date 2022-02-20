@@ -30,8 +30,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.debugger.MyViewModel
 import com.example.debugger.MyViewModelFactory
-import com.example.debugger.TransDetailViewModel
 import com.example.debugger.entity.Customers
+import com.example.debugger.ui.customerdetail.customerdetailtransactions.TransDetailViewModel
 
 @Composable
 fun CustomerList(
@@ -150,7 +150,7 @@ fun AddCustomer(
 
 //This should be reusable for AddCustomer function and Business Analysis Card items
 @Composable
-fun ItemsCard(
+fun CustomerCard(
     image: Painter,
     text: String,
     modifier: Modifier = Modifier,
